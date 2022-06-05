@@ -2,14 +2,14 @@
 
 exports = module.exports = SSEBroadcasterRedisAdapter
 
-var assert       = require('assert'),
-    inherits     = require('util').inherits,
+var assert = require('assert'),
+    inherits = require('util').inherits,
     EventEmitter = require('events'),
-    Broadcaster  = require('sse-broadcast'),
-    redis        = require('redis'),
-    id           = require('mdbid')
+    Broadcaster = require('sse-broadcast'),
+    redis = require('redis'),
+    id = require('mdbid')
 
-function SSEBroadcasterRedisAdapter(broadcaster, optionsOrClient) {
+function SSEBroadcasterRedisAdapter (broadcaster, optionsOrClient) {
     if (!(this instanceof SSEBroadcasterRedisAdapter))
         return new SSEBroadcasterRedisAdapter(broadcaster, optionsOrClient)
 
@@ -22,7 +22,7 @@ function SSEBroadcasterRedisAdapter(broadcaster, optionsOrClient) {
     this.id = id()
     this.broadcaster = broadcaster
 
-    if (optionsOrClient instanceof redis.RedisClient) {
+    if (optionsOrClient.ECHO) {
         this.pub = optionsOrClient
         this.sub = optionsOrClient.duplicate()
     }
@@ -57,11 +57,11 @@ Object.defineProperties(exports, {
     }
 })
 
-SSEBroadcasterRedisAdapter.prototype.onerror = function onerror(err) {
+SSEBroadcasterRedisAdapter.prototype.onerror = function onerror (err) {
     this.emit('error', err)
 }
 
-SSEBroadcasterRedisAdapter.prototype.onpmessage = function onpmessage(pattern, channel, message) {
+SSEBroadcasterRedisAdapter.prototype.onpmessage = function onpmessage (pattern, channel, message) {
     var id = channel.substring(0, 24)
 
     // we've got back our own message
@@ -75,30 +75,30 @@ SSEBroadcasterRedisAdapter.prototype.onpmessage = function onpmessage(pattern, c
     this.broadcaster.publish(channel.substring(30), message)
 }
 
-SSEBroadcasterRedisAdapter.prototype.onpublish = function onpublish(name, message) {
+SSEBroadcasterRedisAdapter.prototype.onpublish = function onpublish (name, message) {
     this.pub.publish(this.id + ':sseb:' + name, JSON.stringify(message))
 }
 
-SSEBroadcasterRedisAdapter.prototype.onsubscribe = function onsubscribe(name) {
+SSEBroadcasterRedisAdapter.prototype.onsubscribe = function onsubscribe (name) {
     this.sub.psubscribe('*:sseb:' + name)
 }
 
-SSEBroadcasterRedisAdapter.prototype.onunsubscribe = function onunsubscribe(name) {
+SSEBroadcasterRedisAdapter.prototype.onunsubscribe = function onunsubscribe (name) {
     if (!this.broadcaster.subscriberCount(name))
         this.sub.punsubscribe('*:sseb:' + name)
 }
 
-SSEBroadcasterRedisAdapter.prototype.quit = function quit() {
+SSEBroadcasterRedisAdapter.prototype.quit = function quit () {
     this.pub.quit()
     this.sub.quit()
 }
 
-SSEBroadcasterRedisAdapter.prototype.unref = function unref() {
+SSEBroadcasterRedisAdapter.prototype.unref = function unref () {
     this.pub.unref()
     this.sub.unref()
 }
 
-SSEBroadcasterRedisAdapter.prototype.end = function end(flush) {
+SSEBroadcasterRedisAdapter.prototype.end = function end (flush) {
     this.pub.end(flush)
     this.sub.end(flush)
 }
