@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/schwarzkopfb/sse-broadcast-redis#readme",
   "devDependencies": {
+    "@types/node": "^17.0.40",
     "coveralls": "^2.11.12",
     "istanbul": "^0.4.5",
     "opener": "^1.4.1",
@@ -42,7 +43,7 @@
   },
   "dependencies": {
     "mdbid": "^1.0.0",
-    "redis": "^2.6.2"
+    "redis": "4.1.0"
   },
   "peerDependencies": {
     "sse-broadcast": "^0"
