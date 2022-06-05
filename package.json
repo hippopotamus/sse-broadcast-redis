@@ -1,7 +1,7 @@
 {
-  "name": "sse-broadcast-redis",
+  "name": "sse-broadcast-redis2",
   "version": "0.1.1",
-  "description": "Redis adapter for sse-broadcast",
+  "description": "Redis adapter for sse-broadcast clone with updated redis driver",
   "main": "index.js",
   "scripts": {
     "test": "tap test/basic.js test/api.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/schwarzkopfb/sse-broadcast-redis.git"
+    "url": "git+https://github.com/hippopotamus/sse-broadcast-redis.git"
   },
   "keywords": [
     "sse",
